@@ -293,7 +293,7 @@ cartero supports precompiling and postprocessing files using transform streams. 
 
 ### Pulling out large packages
 
-Including large, common packages like jQueryUI into the js and css bundles of every page is not efficient as it prevents them from being cached separately by the browser. You can instead pull those packages out of your page bundles and load them separately, from your own server or a CDN, using a [browserify-shim](https://github.com/thlorenz/browserify-shim) config.
+Including large packages like jQueryUI in the js and css bundles of every page is not efficient as it prevents them from being cached separately by the browser. You can instead pull those packages out of your page bundles and load them separately, from your own server or a CDN, using a [browserify-shim](https://github.com/thlorenz/browserify-shim) config.
 
 ### AMD and ES6 modules
 
