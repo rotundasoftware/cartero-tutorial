@@ -1,7 +1,7 @@
 
 # Tutorial: Getting started with cartero
 
-[cartero](https://github.com/rotundasoftware/cartero) is an asset pipeline designed to reduce the friction involved in applying modular design principles to front end web development. It facilitates an organizational structure in which related JavsScript, css, templates, and images are kept together in directories, or "packages". A package contains all the assets needed for a particular interface element or web page. For example, a package might contain assets for
+[cartero](https://github.com/rotundasoftware/cartero) is an asset pipeline designed to reduce the friction involved in applying modular design principles to front end web development. It facilitates an organizational structure in which related JavsScript, css, templates, and images are kept together in directories, or ___packages___. A package contains all the assets needed for a particular interface element or web page. For example, a package might contain assets for
 * A calendar widget
 * A popup dialog
 * A header or footer
@@ -52,8 +52,6 @@ views
 ```
 
 Now, notice that the `style.css` file in the `public/stylesheets` directory. That file pertains to the `layout.jade` template - it contains css that is applied to the layout of the site. So let's put it where it belongs, in the `layout` folder, next to the `layout` template!
-
-Now out views directory looks like so
 
 ```
 views
@@ -117,13 +115,13 @@ views
 
 ### Expressing dependencies
 
-Now we have finished defining three packages. The next step is to express the dependency of the `error` and `index` package on the `layout` package. cartero does not define a new way of expressing dependencies. Instead, it piggy packs on the dependency information that is already in your JavaScript files. By default it expects JavaScript files to use the [CommonJS](http://0fps.net/2013/01/22/commonjs-why-and-how/) `require('modules')` syntax to express dependencies, but you can also use AMD or even ES6 style modules with a little bit of configuration. Let's change the `index.js` in the `error` and `index` package to express the dependency on the `layout` package. (The argument to `require` is resolved using browserify, which implements the [node module system](http://nodejs.org/api/modules.html#modules_loading_from_node_modules_folders) in the browser.)
+Now we have finished defining three packages. The next step is to express the dependency of the `error` and `index` package on the `layout` package. cartero does not define a new way of expressing dependencies. Instead, it piggy packs on the dependency information that is already in your JavaScript files. By default it expects JavaScript files to use the [CommonJS](http://0fps.net/2013/01/22/commonjs-why-and-how/) `require('modules')` syntax to express dependencies (but you can also use AMD or even ES6 style modules). Let's change the `index.js` in the `error` and `index` package to express the dependency on the `layout` package. (The argument to `require` is resolved using browserify, which implements the [node module system](http://nodejs.org/api/modules.html#modules_loading_from_node_modules_folders) in the browser.)
 
 ```javascript
 require('../layout');
 ```
 
-That's all we need. We can now run cartero and we will see that css bundles are generated for the `error` and `index` packages that include the css defined in `layout/style.css`. To install cartero,
+That's the only line we need in those files. We can now run cartero and we'll see that css bundles that are generated for the `error` and `index` packages include the css defined in `layout/style.css`. To install cartero,
 
 ```
 $ npm install -g cartero
@@ -158,7 +156,7 @@ a {
 
 ### Server side lookups
 
-Now we just need to add the logic that enables our web framework to find the assets associated with a given package. cartero has a small server side 'hook' that is able to look up the assets for any given package using the information dropped into the output directory by cartero at build time. (A hook is currently only available for node.js, but one would be easy to implement in any server side framework.) As an added convenience, there is cartero middleware available for express that will automatically populate the `cartero_js` and `cartero_css` properties of `res.locals` with the script and link tags that are needed to load all the assets of the page being rendered.
+Now we just need to add the logic that enables our web framework to find the assets associated with a given package. cartero has a small [server side 'hook'](https://github.com/rotundasoftware/cartero-node-hook) that is able to look up the assets for any given package using the information dropped into the output directory by cartero at build time. (A hook is currently only available for node.js, but one would be easy to implement in any server side framework.) As an added convenience, there [cartero middleware](https://github.com/rotundasoftware/cartero-express-middleware) is available for express that will automatically populate the `cartero_js` and `cartero_css` properties of `res.locals` with the script and link tags that are needed to load all the assets of the page being rendered.
 
 First, install the hook and the middleware:
 
@@ -232,7 +230,7 @@ Now for some fun stuff. Let's see how we an image local to `index.jade` would fi
 $ cartero views public/assets -w
 ```
 
-Now let's put [an image](http://www.diariocultura.mx/wp-content/uploads/2012/11/cartero.jpg) in `index.jade`. First we need to save the image into the `index` package directory, and then enumerate it in the `image` property of its package.json file. Afterwards, our directory will look like so:
+Now let's put [an image](http://www.diariocultura.mx/wp-content/uploads/2012/11/cartero.jpg) in `index.jade`. First we need to save the image into the `index` package directory, and enumerate it in the `image` property of its package.json file. Afterwards, our directory will look like:
 
 ```
 views/index
@@ -283,9 +281,9 @@ The source for this project can be found in the cartero-tutorial repository at [
 
 ## What's next
 
-These topics may be covered in future posts. If you'd like to see a particular tutorial, or have questions / comments about cartero in general, please leave a comment on the hacker news article about this tutorial. Thanks for stopping by!
+These topics may be covered in future posts. If you'd like to see a particular tutorial, or have questions / comments about cartero in general, please leave a comment on the hacker news article about this tutorial.
 
-### Modularization everywhere
+### Reusable UI components
 
 The same modular directory structure used for full pages can be employed to easily reuse interface elements like widgets, dialogs, headers, footers, etc., which can be either application specific, shared between projects, and / or published via npm. Generally these reusable interface elements can be put in a `node_modules` on the app level. (You can keep your app specific packages separate from shared packages by [creating a symlink in your node_modules directory](https://github.com/focusaurus/express_code_structure#the-app-symlink-trick) that points to your app specific modules.)
 
@@ -295,8 +293,8 @@ cartero supports precompiling and postprocessing files using transform streams. 
 
 ### Pulling out large packages
 
-Including large, common packages like jQueryUI into the js and css bundles of every page is not efficient as it prevents them from being cached separately by the browser. You can instead pull those packages out of your page bundles and load them separately, from your own server or a CDN.
+Including large, common packages like jQueryUI into the js and css bundles of every page is not efficient as it prevents them from being cached separately by the browser. You can instead pull those packages out of your page bundles and load them separately, from your own server or a CDN, using a [browserify-shim](https://github.com/thlorenz/browserify-shim) config.
 
 ### AMD and ES6 modules
 
-If you prefer AMD or ES6 modules, you can use that syntax instead of CommonJS to express dependencies, thanks to [browserify transforms](https://github.com/substack/node-browserify/wiki/list-of-transforms).
+If you prefer AMD or ES6 modules, you can use that syntax instead of CommonJS to express dependencies, thanks to the [browserify transforms](https://github.com/substack/node-browserify/wiki/list-of-transforms) [amdify](https://www.npmjs.org/package/amdify) and [es6ify](https://github.com/thlorenz/es6ify).
