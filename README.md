@@ -297,4 +297,4 @@ Including large, common packages like jQueryUI into the js and css bundles of ev
 
 ### AMD and ES6 modules
 
-If you prefer AMD or ES6 modules, you can use that syntax instead of CommonJS to express dependencies, thanks to the [browserify transforms](https://github.com/substack/node-browserify/wiki/list-of-transforms) [amdify](https://www.npmjs.org/package/amdify) and [es6ify](https://github.com/thlorenz/es6ify).
+If you prefer AMD or ES6 modules, you can use that syntax instead of CommonJS to express dependencies, thanks to the [amdify](https://www.npmjs.org/package/amdify) and [es6ify](https://github.com/thlorenz/es6ify) transforms.
