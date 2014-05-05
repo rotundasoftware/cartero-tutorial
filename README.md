@@ -13,7 +13,7 @@ Such packages
 * May depend on other packages (and be depended upon).
 * Can be local to a particular web page, shared between pages, shared between applications, or published via [npm](https://www.npmjs.org/).
 
-cartero does not introduce many new concepts, and the same modular organizational structure it facilitates could also be achieved by stringing together other build tools and the appropriate `<script>`, `<link>`, and `<img>` tags. However, cartero is built from the ground up for modularized applications, and eliminates the friction that occurs when using conventional build for this purpose.
+cartero does not introduce many new concepts, and the same modular organizational structure it facilitates could also be achieved by stringing together other build tools and the appropriate `<script>`, `<link>`, and `<img>` tags. However, cartero is built from the ground up for modularized applications, and eliminates the friction that occurs when using conventional build tools with modular directory structures.
 
 ## Modularizing the express boilerplate app
 
