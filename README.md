@@ -177,7 +177,7 @@ var hook = carteroHook(path.join(__dirname, 'views'), path.join(__dirname,'publi
 app.use(carteroMiddleware(h));
 ```
 
-The cartero hook constructor takes two mandatory arguments, which are the same as the command line arguments for cartero itself. The `outputDirUrl` option tells cartero the url of the output directory, which in our case is `'assets/'`, since the express static middleware is rooted at the `public` directory, and the cartero output folder is at `public/assets`. The hook we create is then passed into the cartero middleware constructor.
+The cartero hook constructor takes two arguments, which are the same as the command line arguments for cartero itself. The `outputDirUrl` option tells cartero the url of the output directory, which in our case is `'assets/'`, since the express static middleware is rooted at the `public` directory, and the cartero output folder is at `public/assets`. The hook we create is then passed into the cartero middleware constructor.
 
 Our last step is to modify the layout template to output the `cartero_js` and `cartero_css` variables:
 
@@ -232,7 +232,7 @@ Now for some fun stuff. Let's see how we an image local to `index.jade` would fi
 $ cartero views public/assets -w
 ```
 
-Now let's download an image, say [this one](http://www.diariocultura.mx/wp-content/uploads/2012/11/cartero.jpg), and use it from `index.jade`. First of all, we need to save it into the `index` package directory, and enumerate it in its package.json file. Afterwards, our directory will look like so:
+Now let's put [an image](http://www.diariocultura.mx/wp-content/uploads/2012/11/cartero.jpg) in `index.jade`. First we need to save the image into the `index` package directory, and then enumerate it in the `image` property of its package.json file. Afterwards, our directory will look like so:
 
 ```
 views/index
@@ -271,17 +271,19 @@ block content
   img(src=cartero_url('./cartero.jpg'))
 ```
 
-The `cartero_url` function is the third (and last) property that is attached to `res.locals` by the cartero middleware. It takes a single argument, which is a file reference that is resolved using the node require algorithm (relative to the view template), and returns the url of the asset at that path. Because the node require algorithm is used to resolve the reference, you can even reference images in packages that are in `node_modules` directories, for example, if the cartero image was in a package called `my-module`, you could resolve the url with:
+The `cartero_url` function is the third (and last) property that is attached to `res.locals` by the cartero middleware. It takes a single argument, which is an asset path that is resolved using the node require algorithm (relative to the view template), and returns the url of the asset. Now when you reload the page in your browser, you should see the cartero image on the index page.
+
+Note that because the node require algorithm is used to resolve the reference, you can easily reference images in other packages. For example, if the cartero image was in a package called `my-module` in some `node_modules` directory, you could resolve the url with:
 
 ```
   img(src=cartero_url('my-module/cartero.jpg'))
 ```
 
-When you reload the page in your browser, you should see the cartero image on the index page. The source for this project can be found in the cartero-tutorial repository at [the `images` branch](https://github.com/rotundasoftware/cartero-tutorial/tree/images). 
+The source for this project can be found in the cartero-tutorial repository at [the `images` branch](https://github.com/rotundasoftware/cartero-tutorial/tree/images). 
 
 ## What's next
 
-These topics will be covered in future posts.
+These topics may be covered in future posts. If you'd like to see a particular tutorial, or have questions / comments about cartero in general, please leave a comment on the hacker news article about this tutorial. Thanks for stopping by!
 
 ### Modularization everywhere
 
@@ -289,17 +291,12 @@ The same modular directory structure used for full pages can be employed to easi
 
 ### Transforms
 
-cartero supports precompiling and postprocessing files, for example converting scss to css or minifying js.
+cartero supports precompiling and postprocessing files using transform streams. For example, its easy to [convert scss to css](https://github.com/rotundasoftware/sass-css-stream) or [uglify JavaScript](https://github.com/hughsk/uglifyify).
 
 ### Pulling out large packages
 
-Including large, common packages like jQueryUI into the js and css bundles of every page is not efficient as it prevents them from being cached separately by the browser. You can instead pull those packages out of your page bundles and load them separately, even from a CDN.
+Including large, common packages like jQueryUI into the js and css bundles of every page is not efficient as it prevents them from being cached separately by the browser. You can instead pull those packages out of your page bundles and load them separately, from your own server or a CDN.
 
 ### AMD and ES6 modules
 
-If you prefer AMD and ES6 modules, you can use those with cartero as well, thanks to [browserify transforms](https://github.com/substack/node-browserify/wiki/list-of-transforms).
-
-If you'd like to see a particular tutorial, or have questions / comments about cartero in general, please leave a comment on the hacker news article about this tutorial. Thanks for stopping by!
-
-
-
+If you prefer AMD or ES6 modules, you can use that syntax instead of CommonJS to express dependencies, thanks to [browserify transforms](https://github.com/substack/node-browserify/wiki/list-of-transforms).
