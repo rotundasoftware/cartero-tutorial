@@ -1,5 +1,5 @@
 
-# Intro to cartero
+# Tutorial: Getting started with cartero
 
 [cartero](https://github.com/rotundasoftware/cartero) is an asset pipeline designed to reduce the friction involved in applying modular design principles to front end web development. It facilitates an organizational structure in which related JavsScript, css, templates, and images are kept together in directories, or "packages". A package contains all the assets needed for a particular interface element or web page. For example, a package might contain assets for
 * A calendar widget
