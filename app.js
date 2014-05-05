@@ -13,8 +13,8 @@ var app = express();
 var carteroHook = require('cartero-node-hook');
 var carteroMiddleware = require('cartero-express-middleware');
 
-h = carteroHook(path.join(__dirname, 'views'), path.join(__dirname,'public/assets'), { outputDirUrl : 'assets/' } );
-app.use(carteroMiddleware(h));
+var hook = carteroHook(path.join(__dirname, 'views'), path.join(__dirname,'public/assets'), { outputDirUrl : 'assets/' } );
+app.use(carteroMiddleware(hook));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
